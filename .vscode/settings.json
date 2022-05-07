@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.js": "javascript",
+        "fstream": "cpp",
+        "*.llc_repl": "cpp"
+    }
+}
