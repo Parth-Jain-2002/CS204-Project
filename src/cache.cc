@@ -1128,6 +1128,27 @@ void CACHE::handle_prefetch()
 
 void CACHE::operate()
 {
+  if (NAME == "LLC"){
+    if (current_core_cycle[0]>200000 and partitions[0] == 8){
+      cout<<"Partitions changed\n";
+      partitions[0] = 2;
+      partitions[1] = 14;
+      for (int set = 0; set<NUM_SET; set++){
+        for (int way = 0; way<NUM_WAY; way++){
+          if (set==2801 and block[set][way].cpu == 0){
+            cout<<way<<":"<<block[set][way].lru<<"\n";
+          }
+          if (block[set][way].cpu == 0 and block[set][way].lru>=2) {
+            block[set][way].cpu = 1;
+            block[set][way].lru += 6;
+            if (set==2801){
+              cout<<way<<":"<<block[set][way].lru<<"\n";
+            }
+          }
+        }
+      }
+    }
+  }
   handle_fill();
   handle_writeback();
   reads_available_this_cycle = MAX_READ;

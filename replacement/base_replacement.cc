@@ -65,56 +65,47 @@ uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const 
 
 uint32_t CACHE::lru_cpu_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type)
 {
-    uint32_t total_ways = partitions[cpu], ways_f = 0, way = 0;
+    uint32_t way = 0;
 
     // fill invalid line first
-    for (way = 0; way < NUM_WAY; way++)
-    {
-        if (block[set][way].cpu == cpu) ways_f++;
-        if ((block[set][way].valid == false) && (block[set][way].cpu == cpu))
-        {
-            DP(if (warmup_complete[cpu]) {
-            cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " invalid set: " << set << " way: " << way;
-            cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
-            cout << dec << " lru: " << block[set][way].lru << endl; });
-
-            break;
+    for (way=0; way<NUM_WAY; way++) {
+        if(block[set][way].cpu==cpu){
+           if (block[set][way].valid == false) {
+               DP ( if (warmup_complete[cpu]) {
+               cout << "[" << NAME << "] " << _func_ << " instr_id: " << instr_id << " invalid set: " << set << " way: " << way;
+               cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
+               cout << dec << " lru: " << block[set][way].lru << endl; });
+               
+               return way;
+               break;
+           }
         }
     }
 
     // LRU victim
-    if (ways_f == total_ways)
-    {
-        ways_f = 0;
-        for (way = 0; way < NUM_WAY; way++)
-        {
-            if ((block[set][way].cpu == cpu) && (block[set][way].lru == (total_ways - 1)))
-            {
-                DP(if (warmup_complete[cpu]) {
-                cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " replace set: " << set << " way: " << way;
-                cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
-                cout << dec << " lru: " << block[set][way].lru << endl; });
+    if (way == NUM_WAY) {
+        int lru_value = 0;
+        int to_be_evicted=0;
+        for (way=0; way<NUM_WAY; way++) {
+                if(block[set][way].cpu==cpu){
+                    if(lru_value<block[set][way].lru){
+                        lru_value = block[set][way].lru;
+                        to_be_evicted=way;
 
-                break;
+                    DP ( if (warmup_complete[cpu]) {
+                    cout << "[" << NAME << "] " << _func_ << " instr_id: " << instr_id << " replace set: " << set << " way: " << way;
+                    cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
+                    cout << dec << " lru: " << block[set][way].lru << endl; });
+                }
             }
-            if (block[set][way].cpu == cpu) ways_f++;
         }
+        way=to_be_evicted;
     }
 
-    if (ways_f == total_ways)
-    {
-        cerr << "[" << NAME << "] " << __func__ << " no victim! set: " << set << endl;
-        cerr << "[" << NAME << "] " << __func__ << " Ways : " << total_ways << endl;
-        cerr << "[" << NAME << "] " << __func__ << " CPU : " << cpu << endl;
-        cerr<<"LRU Values: ";
-        for (way = 0; way < NUM_WAY; way++)
-        {
-            if (block[set][way].cpu == cpu) cerr<<block[set][way].lru<<' ';
-        }
-        cout<<"\n";
+    if (way == NUM_WAY) {
+        cerr << "[" << NAME << "] " << __func__<< " no victim! set: " << set << endl;
         assert(0);
     }
-
     return way;
 }
 
