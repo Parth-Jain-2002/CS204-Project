@@ -85,7 +85,8 @@ class CACHE : public MEMORY {
     const uint32_t NUM_SET, NUM_WAY, NUM_LINE, WQ_SIZE, RQ_SIZE, PQ_SIZE, MSHR_SIZE;
     uint32_t LATENCY;
     BLOCK **block;
-    vector<vector<int>> partitions;
+    vector<int> partitions;
+    vector<int> hit_counts;
     int fill_level;
     uint32_t MAX_READ, MAX_FILL;
     uint32_t reads_available_this_cycle;
@@ -120,7 +121,6 @@ class CACHE : public MEMORY {
 
         LATENCY = 0;
 
-        partitions.resize(NUM_CPUS);
         block = new BLOCK* [NUM_SET];
         // cache block
         for (uint32_t i=0; i<NUM_SET; i++) {
@@ -137,8 +137,8 @@ class CACHE : public MEMORY {
                     block[i][j].cpu = j/(NUM_WAY/NUM_CPUS);
                 }
             }
-            for (uint32_t j=0; j<NUM_WAY; j++) {
-                partitions[j/(NUM_WAY/NUM_CPUS)].push_back(j);
+            for (int i=0; i<NUM_CPUS; i++){
+                partitions.push_back(NUM_WAY/NUM_CPUS);
             }
         }
 

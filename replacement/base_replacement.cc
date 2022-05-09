@@ -65,14 +65,14 @@ uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const 
 
 uint32_t CACHE::lru_cpu_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type)
 {
-    uint32_t total_ways = partitions[cpu].size(), way = 0;
+    uint32_t total_ways = partitions[cpu], ways_f = 0, way = 0;
 
     // fill invalid line first
-    for (way = 0; way < total_ways; way++)
+    for (way = 0; way < NUM_WAY; way++)
     {
-        if (block[set][partitions[cpu][way]].valid == false)
+        if (block[set][way].cpu == cpu) ways_f++;
+        if ((block[set][way].valid == false) && (block[set][way].cpu == cpu))
         {
-
             DP(if (warmup_complete[cpu]) {
             cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " invalid set: " << set << " way: " << way;
             cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
@@ -83,13 +83,13 @@ uint32_t CACHE::lru_cpu_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, co
     }
 
     // LRU victim
-    if (way == total_ways)
+    if (ways_f == total_ways)
     {
-        for (way = 0; way < total_ways; way++)
+        ways_f = 0;
+        for (way = 0; way < NUM_WAY; way++)
         {
-            if (block[set][partitions[cpu][way]].lru == total_ways - 1)
+            if ((block[set][way].cpu == cpu) && (block[set][way].lru == (total_ways - 1)))
             {
-
                 DP(if (warmup_complete[cpu]) {
                 cout << "[" << NAME << "] " << __func__ << " instr_id: " << instr_id << " replace set: " << set << " way: " << way;
                 cout << hex << " address: " << (full_addr>>LOG2_BLOCK_SIZE) << " victim address: " << block[set][way].address << " data: " << block[set][way].data;
@@ -97,18 +97,25 @@ uint32_t CACHE::lru_cpu_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, co
 
                 break;
             }
+            if (block[set][way].cpu == cpu) ways_f++;
         }
     }
 
-    if (way == total_ways)
+    if (ways_f == total_ways)
     {
         cerr << "[" << NAME << "] " << __func__ << " no victim! set: " << set << endl;
         cerr << "[" << NAME << "] " << __func__ << " Ways : " << total_ways << endl;
         cerr << "[" << NAME << "] " << __func__ << " CPU : " << cpu << endl;
+        cerr<<"LRU Values: ";
+        for (way = 0; way < NUM_WAY; way++)
+        {
+            if (block[set][way].cpu == cpu) cerr<<block[set][way].lru<<' ';
+        }
+        cout<<"\n";
         assert(0);
     }
 
-    return partitions[cpu][way];
+    return way;
 }
 
 void CACHE::lru_update(uint32_t set, uint32_t way)
@@ -127,12 +134,11 @@ void CACHE::lru_update(uint32_t set, uint32_t way)
 void CACHE::lru_cpu_update(uint32_t set, uint32_t way, uint32_t cpu)
 {
     // update lru replacement state
-    uint32_t total_ways = partitions[cpu].size();
-    for (uint32_t i = 0; i < total_ways; i++)
+    for (uint32_t i = 0; i < NUM_WAY; i++)
     {
-        if ((block[set][partitions[cpu][i]].lru < block[set][way].lru))
+        if ((block[set][i].cpu == cpu) && (block[set][i].lru < block[set][way].lru))
         {
-            block[set][partitions[cpu][i]].lru++;
+            block[set][i].lru++;
         }
     }
     block[set][way].lru = 0; // promote to the MRU position

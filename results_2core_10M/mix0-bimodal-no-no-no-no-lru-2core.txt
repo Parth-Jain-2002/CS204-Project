@@ -1,3 +1,5 @@
+8 Partitions given
+8 Partitions given
 
 *** ChampSim Multicore Out-of-Order Simulator ***
 
@@ -13,13 +15,13 @@ CPU 1 runs /home/prathamkundan/MAIN/ChampSim/dpc3_traces/gcc_13B.trace.xz
 CPU 0 Bimodal branch predictor
 CPU 1 Bimodal branch predictor
 
-Warmup complete CPU 0 instructions: 1000791 cycles: 556526 (Simulation time: 0 hr 0 min 6 sec) 
-Warmup complete CPU 1 instructions: 1000003 cycles: 556526 (Simulation time: 0 hr 0 min 6 sec) 
+Warmup complete CPU 0 instructions: 1000791 cycles: 556526 (Simulation time: 0 hr 0 min 7 sec) 
+Warmup complete CPU 1 instructions: 1000003 cycles: 556526 (Simulation time: 0 hr 0 min 7 sec) 
 
-Heartbeat CPU 1 instructions: 10000002 cycles: 53218609 heartbeat IPC: 0.187904 cumulative IPC: 0.170901 (Simulation time: 0 hr 1 min 33 sec) 
-Heartbeat CPU 0 instructions: 10000002 cycles: 53229980 heartbeat IPC: 0.187864 cumulative IPC: 0.170849 (Simulation time: 0 hr 1 min 33 sec) 
-Finished CPU 1 instructions: 10000002 cycles: 61278430 cumulative IPC: 0.16319 (Simulation time: 0 hr 1 min 41 sec) 
-Finished CPU 0 instructions: 10000003 cycles: 61298127 cumulative IPC: 0.163137 (Simulation time: 0 hr 1 min 41 sec) 
+Heartbeat CPU 1 instructions: 10000002 cycles: 53218609 heartbeat IPC: 0.187904 cumulative IPC: 0.170901 (Simulation time: 0 hr 1 min 55 sec) 
+Heartbeat CPU 0 instructions: 10000002 cycles: 53229980 heartbeat IPC: 0.187864 cumulative IPC: 0.170849 (Simulation time: 0 hr 1 min 55 sec) 
+Finished CPU 1 instructions: 10000002 cycles: 61278430 cumulative IPC: 0.16319 (Simulation time: 0 hr 2 min 5 sec) 
+Finished CPU 0 instructions: 10000003 cycles: 61298127 cumulative IPC: 0.163137 (Simulation time: 0 hr 2 min 5 sec) 
 
 ChampSim completed all CPUs
 

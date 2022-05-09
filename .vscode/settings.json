@@ -2,6 +2,7 @@
     "files.associations": {
         "*.js": "javascript",
         "fstream": "cpp",
-        "*.llc_repl": "cpp"
+        "*.llc_repl": "cpp",
+        "iostream": "cpp"
     }
 }
