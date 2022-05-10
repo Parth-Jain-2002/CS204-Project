@@ -3,6 +3,8 @@
         "*.js": "javascript",
         "fstream": "cpp",
         "*.llc_repl": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "limits": "cpp"
     }
 }

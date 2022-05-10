@@ -258,6 +258,24 @@ void CACHE::handle_writeback()
     uint32_t set = get_set(WQ.entry[index].address);
     int way = check_hit(&WQ.entry[index]);
 
+    if (cache_type == IS_LLC && set%(NUM_SET/32) == 0){
+        int atd_way = check_hit_atd(&WQ.entry[index]);
+        if (atd_way == -1){
+          int way_r = atd_lru_victim(WQ.entry[index].cpu, set/(NUM_SET/32));
+          fill_atd(set/(NUM_SET/32), way_r, &WQ.entry[index]);
+        }
+        else{
+          if (current_core_cycle[0]>50000000){
+            cerr<<"CORE: "<<WQ.entry[index].cpu<<" HITS: ";
+            for (uint32_t i=0; i< NUM_WAY; i++){
+              cerr<<hit_counts[WQ.entry[index].cpu][i]<<' ';
+            }
+            cerr<<endl;
+          }
+          // atd_lru_update(set/(NUM_SET/32), atd_way, RQ.entry[index].cpu);
+        }
+      }
+
     if (way >= 0)
     { // writeback hit (or RFO hit for L1D)
 
@@ -437,7 +455,6 @@ void CACHE::handle_writeback()
         if ((cache_type == IS_LLC) && (way == LLC_WAY))
         {
           cerr << "LLC bypassing for writebacks is not allowed!" << endl;
-          cerr << "CPU: "<<writeback_cpu<<"WAY: "<<way<< endl;
           assert(0);
         }
 #endif
@@ -579,6 +596,23 @@ void CACHE::handle_read()
       // access cache
       uint32_t set = get_set(RQ.entry[index].address);
       int way = check_hit(&RQ.entry[index]);
+      if (cache_type == IS_LLC && set%(NUM_SET/32) == 0){
+        int atd_way = check_hit_atd(&RQ.entry[index]);
+        if (atd_way == -1){
+          int way_r = atd_lru_victim(RQ.entry[index].cpu, set/(NUM_SET/32));
+          fill_atd(set/(NUM_SET/32), way_r, &RQ.entry[index]);
+        }
+        else{
+          if (current_core_cycle[0]>50000000){
+            cerr<<"CORE: "<<RQ.entry[index].cpu<<" HITS: ";
+            for (uint32_t i=0; i< NUM_WAY; i++){
+              cerr<<hit_counts[RQ.entry[index].cpu][i]<<' ';
+            }
+            cerr<<endl;
+          }
+          atd_lru_update(set/(NUM_SET/32), atd_way, RQ.entry[index].cpu);
+        }
+      }
 
       if (way >= 0)
       { // read hit
@@ -1128,27 +1162,6 @@ void CACHE::handle_prefetch()
 
 void CACHE::operate()
 {
-  if (NAME == "LLC"){
-    if (current_core_cycle[0]>200000 and partitions[0] == 8){
-      cout<<"Partitions changed\n";
-      partitions[0] = 2;
-      partitions[1] = 14;
-      for (int set = 0; set<NUM_SET; set++){
-        for (int way = 0; way<NUM_WAY; way++){
-          if (set==2801 and block[set][way].cpu == 0){
-            cout<<way<<":"<<block[set][way].lru<<"\n";
-          }
-          if (block[set][way].cpu == 0 and block[set][way].lru>=2) {
-            block[set][way].cpu = 1;
-            block[set][way].lru += 6;
-            if (set==2801){
-              cout<<way<<":"<<block[set][way].lru<<"\n";
-            }
-          }
-        }
-      }
-    }
-  }
   handle_fill();
   handle_writeback();
   reads_available_this_cycle = MAX_READ;
@@ -1226,6 +1239,37 @@ void CACHE::fill_cache(uint32_t set, uint32_t way, PACKET *packet)
     cout << " data: " << block[set][way].data << dec << endl; });
 }
 
+void CACHE::fill_atd(uint32_t set, uint32_t way, PACKET *packet)
+{
+  uint64_t curr_cpu = packet->cpu;
+
+  if (atd[curr_cpu][set][way].valid == 0)
+  {
+    atd[curr_cpu][set][way].valid = 1;
+  }
+
+  atd[curr_cpu][set][way].dirty = 0;
+  atd[curr_cpu][set][way].prefetch = (packet->type == PREFETCH) ? 1 : 0;
+  atd[curr_cpu][set][way].used = 0;
+  atd[curr_cpu][set][way].depth = packet->depth;
+  atd[curr_cpu][set][way].signature = packet->signature;
+  atd[curr_cpu][set][way].confidence = packet->confidence;
+  atd[curr_cpu][set][way].delta = packet->delta;
+
+  atd[curr_cpu][set][way].tag = packet->address;
+  atd[curr_cpu][set][way].address = packet->address;
+  atd[curr_cpu][set][way].full_addr = packet->full_addr;
+  atd[curr_cpu][set][way].data = packet->data;
+  atd[curr_cpu][set][way].ip = packet->ip;
+  atd[curr_cpu][set][way].cpu = packet->cpu;
+  atd[curr_cpu][set][way].instr_id = packet->instr_id;
+
+  DP(if (warmup_complete[packet->cpu]) {
+    cout << "[" << NAME << "] " << __func__ << " set: " << set << " way: " << way;
+    cout << " lru: " << atd[curr_cpu][set][way].lru << " tag: " << hex << atd[curr_cpu][set][way].tag << " full_addr: " << atd[curr_cpu][set][way].full_addr;
+    cout << " data: " << atd[curr_cpu][set][way].data << dec << endl; });
+}
+
 int CACHE::check_hit(PACKET *packet)
 {
   uint32_t set = get_set(packet->address);
@@ -1238,25 +1282,68 @@ int CACHE::check_hit(PACKET *packet)
     cerr << " event: " << packet->event_cycle << endl;
     assert(0);
   }
-
   // hit
-  for (uint32_t way = 0; way < NUM_WAY; way++)
-  {
-    if (block[set][way].valid && (block[set][way].tag == packet->address))
+  if (NAME != "LLC")
+    for (uint32_t way = 0; way < NUM_WAY; way++)
     {
+      if (block[set][way].valid && (block[set][way].tag == packet->address))
+      {
 
-      match_way = way;
+        match_way = way;
 
-      DP(if (warmup_complete[packet->cpu]) {
+        DP(if (warmup_complete[packet->cpu]) {
             cout << "[" << NAME << "] " << __func__ << " instr_id: " << packet->instr_id << " type: " << +packet->type << hex << " addr: " << packet->address;
             cout << " full_addr: " << packet->full_addr << " tag: " << block[set][way].tag << " data: " << block[set][way].data << dec;
             cout << " set: " << set << " way: " << way << " lru: " << block[set][way].lru;
             cout << " event: " << packet->event_cycle << " cycle: " << current_core_cycle[cpu] << endl; });
 
-      break;
+        break;
+      }
+    }
+  else
+  {
+    for (uint32_t way = 0; way < NUM_WAY; way++)
+    {
+      if (block[set][way].valid && (block[set][way].tag == packet->address) && block[set][way].cpu == packet->cpu)
+      {
+
+        match_way = way;
+
+        DP(if (warmup_complete[packet->cpu]) {
+                  cout << "[" << NAME << "] " << __func__ << " instr_id: " << packet->instr_id << " type: " << +packet->type << hex << " addr: " << packet->address;
+                  cout << " full_addr: " << packet->full_addr << " tag: " << block[set][way].tag << " data: " << block[set][way].data << dec;
+                  cout << " set: " << set << " way: " << way << " lru: " << block[set][way].lru;
+                  cout << " event: " << packet->event_cycle << " cycle: " << current_core_cycle[cpu] << endl; });
+
+        break;
+      }
     }
   }
+  return match_way;
+}
 
+int CACHE::check_hit_atd(PACKET *packet)
+{
+  uint32_t set = get_set(packet->address) / (NUM_SET / 32);
+  int match_way = -1;
+  int curr_cpu = packet->cpu;
+
+  if (NAME == "LLC")
+    for (uint32_t way = 0; way < NUM_WAY; way++)
+    {
+      if (atd[curr_cpu][set][way].valid && (atd[curr_cpu][set][way].tag == packet->address))
+      {
+        match_way = way;
+        hit_counts[curr_cpu][atd[curr_cpu][set][way].lru]++;
+        DP(if (warmup_complete[packet->cpu]) {
+              cout << "[" << NAME << "] " << __func__ << " instr_id: " << packet->instr_id << " type: " << +packet->type << hex << " addr: " << packet->address;
+              cout << " full_addr: " << packet->full_addr << " tag: " << block[set][way].tag << " data: " << block[set][way].data << dec;
+              cout << " set: " << set << " way: " << way << " lru: " << block[set][way].lru;
+              cout << " event: " << packet->event_cycle << " cycle: " << current_core_cycle[cpu] << endl; });
+
+        break;
+      }
+    }
   return match_way;
 }
 
