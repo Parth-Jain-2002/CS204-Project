@@ -1,0 +1,29 @@
+
+*** ChampSim Multicore Out-of-Order Simulator ***
+
+Warmup Instructions: 1000000
+Simulation Instructions: 30000000
+Number of CPUs: 2
+LLC sets: 4096
+LLC ways: 16
+Off-chip DRAM Size: 4096 MB Channels: 1 Width: 64-bit Data Rate: 3200 MT/s
+
+CPU 0 runs /home/akshat/CS204-Project/dpc3_traces/gcc_13B.trace.xz
+CPU 1 runs /home/akshat/CS204-Project/dpc3_traces/gcc_13B.trace.xz
+CPU 0 Bimodal branch predictor
+CPU 1 Bimodal branch predictor
+Partitions changed
+2:8
+3:9
+4:10
+5:11
+6:12
+7:13
+
+Warmup complete CPU 0 instructions: 1000791 cycles: 556534 (Simulation time: 0 hr 0 min 5 sec) 
+Warmup complete CPU 1 instructions: 1000003 cycles: 556534 (Simulation time: 0 hr 0 min 5 sec) 
+
+[LLC] lru_cpu_victim no victim! set: 1915
+[LLC] lru_cpu_victim Ways : 14
+[LLC] lru_cpu_victim CPU : 1
+LRU Values: 1 0 1 10 9 8 11 7 6 5 4 3 2 12 bimodal-no-no-no-no-lru-2core: replacement/base_replacement.cc:115: uint32_t CACHE::lru_cpu_victim(uint32_t, uint64_t, uint32_t, const BLOCK*, uint64_t, uint64_t, uint32_t): Assertion `0' failed.

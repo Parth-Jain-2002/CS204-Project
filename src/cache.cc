@@ -3,6 +3,8 @@
 
 uint64_t l2pf_access = 0;
 
+uint64_t partition_count=0; // This variable is used for call paritition only on 5 million cycles. We might make inside 
+
 void CACHE::handle_fill()
 {
   // handle fill
@@ -1172,6 +1174,47 @@ void CACHE::handle_prefetch()
 
 void CACHE::operate()
 {
+  if (NAME == "LLC"){
+    if (current_core_cycle[0]/5000000 != partition_count ){
+      cout<<"Partitions changed\n";
+      vector<uint32_t> new_allocations = partition_algorithm();
+      vector<uint32_t> extra; // Contains apps with extra ways
+      vector<uint32_t> deficient; // Contains apps with deficient ways
+      for(uint32_t application=0;application<NUM_CPUS;application++){
+          // Partition array for cpus assumed
+          if(partitions[application]>new_allocations[application]){
+             extra.push_back(application);
+          }
+          if(partitions[application]<new_allocations[application]){
+             deficient.push_back(application);
+          }
+      }
+      for (int set = 0; set<NUM_SET; set++){
+        vector <uint32_t> to_allocate;
+        for (int way = 0; way<NUM_WAY; way++){
+          // if (set==2801 and block[set][way].cpu == 0){
+          //   cout<<way<<":"<<block[set][way].lru<<"\n";
+          // }
+          if (block[set][way].lru>=new_allocations[block[set][way].cpu]) {
+              to_allocate.push_back(way);
+          }
+       }
+       for(uint32_t i=0;i<extra.size();i++){
+         partitions[extra[i]]=new_allocations[extra[i]];
+       }
+       for(uint32_t i=0;i<deficient.size();i++){
+         while(partitions[deficient[i]]<new_allocations[deficient[i]]){
+           uint32_t req_way = to_allocate[to_allocate.size()-1];
+           block[set][req_way].cpu=deficient[i];
+           block[set][req_way].lru=partitions[deficient[i]];
+           partitions[deficient[i]]++;
+           to_allocate.pop_back();
+         }
+       }
+      }
+      partition_count++;
+    }
+  }
   handle_fill();
   handle_writeback();
   reads_available_this_cycle = MAX_READ;
