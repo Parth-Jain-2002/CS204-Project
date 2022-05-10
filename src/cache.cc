@@ -1134,19 +1134,19 @@ void CACHE::operate()
     if (current_core_cycle[0]/5000000 != partition_count ){
       cout<<"Partitions changed\n";
       vector<uint32_t> new_allocations = partition_algorithm();
-      vector<uint32_t> less;
-      vector<uint32_t> more;
+      vector<uint32_t> extra; // Contains apps with extra ways
+      vector<uint32_t> deficient; // Contains apps with deficient ways
       for(uint32_t application=0;application<NUM_CPUS;application++){
           // Partition array for cpus assumed
           if(partitions[application]>new_allocations[application]){
-             less.push_back(application);
+             extra.push_back(application);
           }
           if(partitions[application]<new_allocations[application]){
-             more.push_back(application);
+             deficient.push_back(application);
           }
       }
       for (int set = 0; set<NUM_SET; set++){
-        vector<uint32_t> to_allocate;
+        vector <uint32_t> to_allocate;
         for (int way = 0; way<NUM_WAY; way++){
           // if (set==2801 and block[set][way].cpu == 0){
           //   cout<<way<<":"<<block[set][way].lru<<"\n";
@@ -1155,10 +1155,18 @@ void CACHE::operate()
               to_allocate.push_back(way);
           }
        }
-       for(uint32_t i=0;i<less.size();i++){
-         partitions[less[i]]=new_allocations[less[i]];
+       for(uint32_t i=0;i<extra.size();i++){
+         partitions[extra[i]]=new_allocations[extra[i]];
        }
-       for
+       for(uint32_t i=0;i<deficient.size();i++){
+         while(partitions[deficient[i]]<new_allocations[deficient[i]]){
+           uint32_t req_way = to_allocate[to_allocate.size()-1];
+           block[set][req_way].cpu=deficient[i];
+           block[set][req_way].lru=partitions[deficient[i]];
+           partitions[deficient[i]]++;
+           to_allocate.pop_back();
+         }
+       }
       }
       partition_count++;
     }
