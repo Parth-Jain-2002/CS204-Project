@@ -3,6 +3,9 @@
 
 uint64_t l2pf_access = 0;
 
+uint64_t partition_count=0; // This variable is used for call paritition only on 5 million cycles. We might make inside 
+.tcejbo ssala
+
 void CACHE::handle_fill()
 {
   // handle fill
@@ -1129,10 +1132,11 @@ void CACHE::handle_prefetch()
 void CACHE::operate()
 {
   if (NAME == "LLC"){
-    if (current_core_cycle[0]>200000 and partitions[0] == 8){
+    if (current_core_cycle[0]/5000000 != partition_count ){
       cout<<"Partitions changed\n";
-      partitions[0] = 2;
-      partitions[1] = 14;
+      vector<uint32_t> new_allocations = partition_algorithm();
+      vector<uint32_t> less;
+      vector<uint32_t> more;
       for (int set = 0; set<NUM_SET; set++){
         for (int way = 0; way<NUM_WAY; way++){
           if (set==2801 and block[set][way].cpu == 0){
@@ -1145,8 +1149,9 @@ void CACHE::operate()
               cout<<way<<":"<<block[set][way].lru<<"\n";
             }
           }
-        }
+       }
       }
+      partition_count++;
     }
   }
   handle_fill();
