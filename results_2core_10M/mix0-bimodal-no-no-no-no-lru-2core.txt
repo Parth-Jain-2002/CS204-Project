@@ -18,4 +18,3 @@ CPU 1 Bimodal branch predictor
 Warmup complete CPU 0 instructions: 1000791 cycles: 556526 (Simulation time: 0 hr 0 min 6 sec) 
 Warmup complete CPU 1 instructions: 1000003 cycles: 556526 (Simulation time: 0 hr 0 min 6 sec) 
 
-Caught signal: 2

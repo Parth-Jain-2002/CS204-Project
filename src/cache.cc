@@ -258,23 +258,28 @@ void CACHE::handle_writeback()
     uint32_t set = get_set(WQ.entry[index].address);
     int way = check_hit(&WQ.entry[index]);
 
-    if (cache_type == IS_LLC && set%(NUM_SET/32) == 0){
-        int atd_way = check_hit_atd(&WQ.entry[index]);
-        if (atd_way == -1){
-          int way_r = atd_lru_victim(WQ.entry[index].cpu, set/(NUM_SET/32));
-          fill_atd(set/(NUM_SET/32), way_r, &WQ.entry[index]);
-        }
-        else{
-          if (current_core_cycle[0]>50000000){
-            cerr<<"CORE: "<<WQ.entry[index].cpu<<" HITS: ";
-            for (uint32_t i=0; i< NUM_WAY; i++){
-              cerr<<hit_counts[WQ.entry[index].cpu][i]<<' ';
-            }
-            cerr<<endl;
-          }
-          // atd_lru_update(set/(NUM_SET/32), atd_way, RQ.entry[index].cpu);
-        }
+    if (cache_type == IS_LLC && set % (NUM_SET / 32) == 0)
+    {
+      int atd_way = check_hit_atd(&WQ.entry[index]);
+      if (atd_way == -1)
+      {
+        int way_r = atd_lru_victim(WQ.entry[index].cpu, set / (NUM_SET / 32));
+        fill_atd(set / (NUM_SET / 32), way_r, &WQ.entry[index]);
       }
+      else
+      {
+        if (current_core_cycle[0] > 50000000)
+        {
+          cerr << "CORE: " << WQ.entry[index].cpu << " HITS: ";
+          for (uint32_t i = 0; i < NUM_WAY; i++)
+          {
+            cerr << hit_counts[WQ.entry[index].cpu][i] << ' ';
+          }
+          cerr << endl;
+        }
+        // atd_lru_update(set/(NUM_SET/32), atd_way, RQ.entry[index].cpu);
+      }
+    }
 
     if (way >= 0)
     { // writeback hit (or RFO hit for L1D)
@@ -596,21 +601,26 @@ void CACHE::handle_read()
       // access cache
       uint32_t set = get_set(RQ.entry[index].address);
       int way = check_hit(&RQ.entry[index]);
-      if (cache_type == IS_LLC && set%(NUM_SET/32) == 0){
+      if (cache_type == IS_LLC && set % (NUM_SET / 32) == 0)
+      {
         int atd_way = check_hit_atd(&RQ.entry[index]);
-        if (atd_way == -1){
-          int way_r = atd_lru_victim(RQ.entry[index].cpu, set/(NUM_SET/32));
-          fill_atd(set/(NUM_SET/32), way_r, &RQ.entry[index]);
+        if (atd_way == -1)
+        {
+          int way_r = atd_lru_victim(RQ.entry[index].cpu, set / (NUM_SET / 32));
+          fill_atd(set / (NUM_SET / 32), way_r, &RQ.entry[index]);
         }
-        else{
-          if (current_core_cycle[0]>50000000){
-            cerr<<"CORE: "<<RQ.entry[index].cpu<<" HITS: ";
-            for (uint32_t i=0; i< NUM_WAY; i++){
-              cerr<<hit_counts[RQ.entry[index].cpu][i]<<' ';
+        else
+        {
+          if (current_core_cycle[0] > 50000000)
+          {
+            cerr << "CORE: " << RQ.entry[index].cpu << " HITS: ";
+            for (uint32_t i = 0; i < NUM_WAY; i++)
+            {
+              cerr << hit_counts[RQ.entry[index].cpu][i] << ' ';
             }
-            cerr<<endl;
+            cerr << endl;
           }
-          atd_lru_update(set/(NUM_SET/32), atd_way, RQ.entry[index].cpu);
+          atd_lru_update(set / (NUM_SET / 32), atd_way, RQ.entry[index].cpu);
         }
       }
 
