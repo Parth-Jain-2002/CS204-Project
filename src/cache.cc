@@ -3,7 +3,7 @@
 
 uint64_t l2pf_access = 0;
 
-uint64_t partition_count=0; // This variable is used for call paritition only on 5 million cycles. We might make inside 
+uint64_t partition_count = 0; // This variable is used for call paritition only on 5 million cycles. We might make inside
 
 void CACHE::handle_fill()
 {
@@ -270,15 +270,15 @@ void CACHE::handle_writeback()
       }
       else
       {
-        if (current_core_cycle[0] > 50000000)
-        {
-          cerr << "CORE: " << WQ.entry[index].cpu << " HITS: ";
-          for (uint32_t i = 0; i < NUM_WAY; i++)
-          {
-            cerr << hit_counts[WQ.entry[index].cpu][i] << ' ';
-          }
-          cerr << endl;
-        }
+        // if (current_core_cycle[0] > 50000000)
+        // {
+        //   cerr << "CORE: " << WQ.entry[index].cpu << " HITS: ";
+        //   for (uint32_t i = 0; i < NUM_WAY; i++)
+        //   {
+        //     cerr << hit_counts[WQ.entry[index].cpu][i] << ' ';
+        //   }
+        //   cerr << endl;
+        // }
         // atd_lru_update(set/(NUM_SET/32), atd_way, RQ.entry[index].cpu);
       }
     }
@@ -613,15 +613,15 @@ void CACHE::handle_read()
         }
         else
         {
-          if (current_core_cycle[0] > 50000000)
-          {
-            cerr << "CORE: " << RQ.entry[index].cpu << " HITS: ";
-            for (uint32_t i = 0; i < NUM_WAY; i++)
-            {
-              cerr << hit_counts[RQ.entry[index].cpu][i] << ' ';
-            }
-            cerr << endl;
-          }
+          // if (current_core_cycle[0] > 50000000)
+          // {
+          //   cerr << "CORE: " << RQ.entry[index].cpu << " HITS: ";
+          //   for (uint32_t i = 0; i < NUM_WAY; i++)
+          //   {
+          //     cerr << hit_counts[RQ.entry[index].cpu][i] << ' ';
+          //   }
+          //   cerr << endl;
+          // }
           atd_lru_update(set / (NUM_SET / 32), atd_way, RQ.entry[index].cpu);
         }
       }
@@ -1174,45 +1174,75 @@ void CACHE::handle_prefetch()
 
 void CACHE::operate()
 {
-  if (NAME == "LLC"){
-    if (current_core_cycle[0]/5000000 != partition_count ){
-      cout<<"Partitions changed\n";
+  if (NAME == "LLC")
+  {
+    if (current_core_cycle[0] / 5000000 != partition_count)
+    {
+      cerr << "Partitions changing!" << endl;
       vector<uint32_t> new_allocations = partition_algorithm();
-      vector<uint32_t> extra; // Contains apps with extra ways
+      cerr << "Partitions changed!" << endl;
+      vector<uint32_t> extra;     // Contains apps with extra ways
       vector<uint32_t> deficient; // Contains apps with deficient ways
-      for(uint32_t application=0;application<NUM_CPUS;application++){
-          // Partition array for cpus assumed
-          if(partitions[application]>new_allocations[application]){
-             extra.push_back(application);
-          }
-          if(partitions[application]<new_allocations[application]){
-             deficient.push_back(application);
-          }
+      for (uint32_t application = 0; application < NUM_CPUS; application++)
+      {
+        // Partition array for cpus assumed
+        if (partitions[application] > new_allocations[application])
+        {
+          extra.push_back(application);
+        }
+        if (partitions[application] < new_allocations[application])
+        {
+          deficient.push_back(application);
+        }
       }
-      for (int set = 0; set<NUM_SET; set++){
-        vector <uint32_t> to_allocate;
-        for (int way = 0; way<NUM_WAY; way++){
-          // if (set==2801 and block[set][way].cpu == 0){
-          //   cout<<way<<":"<<block[set][way].lru<<"\n";
-          // }
-          if (block[set][way].lru>=new_allocations[block[set][way].cpu]) {
-              to_allocate.push_back(way);
+      for (int set = 0; set < NUM_SET; set++)
+      {
+        vector<uint32_t> to_allocate;
+        for (int way = 0; way < NUM_WAY; way++)
+        {
+          if (block[set][way].lru >= new_allocations[block[set][way].cpu])
+          {
+            to_allocate.push_back(way);
           }
-       }
-       for(uint32_t i=0;i<extra.size();i++){
-         partitions[extra[i]]=new_allocations[extra[i]];
-       }
-       for(uint32_t i=0;i<deficient.size();i++){
-         while(partitions[deficient[i]]<new_allocations[deficient[i]]){
-           uint32_t req_way = to_allocate[to_allocate.size()-1];
-           block[set][req_way].cpu=deficient[i];
-           block[set][req_way].lru=partitions[deficient[i]];
-           partitions[deficient[i]]++;
-           to_allocate.pop_back();
-         }
-       }
+        }
+        for (uint32_t i = 0; i < extra.size(); i++)
+        {
+          partitions[extra[i]] = new_allocations[extra[i]];
+        }
+        vector<int> copy_partitions;
+        for (auto i : partitions)
+        {
+          copy_partitions.push_back(i);
+        }
+        for (uint32_t i = 0; i < deficient.size(); i++)
+        {
+          while (copy_partitions[deficient[i]] < new_allocations[deficient[i]])
+          {
+            uint32_t req_way = to_allocate[to_allocate.size() - 1];
+            block[set][req_way].cpu = deficient[i];
+            block[set][req_way].valid = 0;
+            block[set][req_way].lru = copy_partitions[deficient[i]];
+            copy_partitions[deficient[i]]++;
+            to_allocate.pop_back();
+          }
+        }
+      }
+      cerr<<"EXTRA: "<<extra.size()<<" DEFICIENT: "<<deficient.size()<<endl;
+      for (int i = 0; i < partitions.size(); i++)
+      {
+        partitions[i] = new_allocations[i];
       }
       partition_count++;
+      for (uint32_t i = 0; i < 5; i++)
+      {
+        for (uint32_t j = 0; j < NUM_WAY; j++)
+        {
+          cerr << block[i][j].cpu << " ";
+        }
+        cerr << endl;
+      }
+      cerr << endl
+           << endl;
     }
   }
   handle_fill();
@@ -2030,4 +2060,66 @@ uint32_t CACHE::get_size(uint8_t queue_type, uint64_t address)
 void CACHE::increment_WQ_FULL(uint64_t address)
 {
   WQ.FULL++;
+}
+
+float CACHE::get_mu_value(uint32_t core, uint32_t a, uint32_t b)
+{
+    vector<vector<int>>arr(NUM_CPUS);
+    for(uint32_t i=0; i<NUM_CPUS; i++){
+      arr[i].push_back(hit_counts[i][0]);
+      for (uint32_t j = 1; j<NUM_WAY; j++){
+        arr[i].push_back(arr[i][j-1]+hit_counts[i][j]);
+      }
+    }
+    int U = arr[core][b - 1] - arr[core][a - 1];
+    return (float)U / (float)(b - a);
+}
+
+pair<float, uint32_t> CACHE:: get_max_mu(uint32_t core, uint32_t alloc, uint32_t balance)
+{
+    float max_mu = 0;
+    uint32_t min_way = 0;
+    for (uint32_t way = 1; way <= balance; way++)
+    {
+        float mu = get_mu_value(core, alloc, alloc + way);
+        if (mu > max_mu)
+        {
+            max_mu = mu;
+            min_way = way;
+        }
+    }
+    return {max_mu, min_way};
+}
+
+vector<uint32_t> CACHE:: partition_algorithm()
+{
+    int balance = NUM_WAY - NUM_CPUS;
+    vector<uint32_t> allocations(NUM_CPUS, 1);
+    vector<pair<float, uint32_t>> present_state(NUM_CPUS, {0,0});
+    while (balance != 0)
+    {
+        for (uint32_t application = 0; application < NUM_CPUS; application++)
+        {
+            uint32_t alloc = allocations[application];
+            present_state[application] = get_max_mu(application, alloc, balance);
+        }
+        uint32_t winner = 0;
+        float max_mu = 0;
+        for (uint32_t application = 0; application < NUM_CPUS; application++)
+        {
+            if (present_state[application].first > max_mu)
+            {
+                winner = application;
+                max_mu = present_state[application].first;
+            }
+        }
+        allocations[winner] += present_state[winner].second;
+        balance -= present_state[winner].second;
+    }
+    for (uint32_t i = 0; i<NUM_CPUS; i++){
+      for (uint32_t j = 0; j<NUM_WAY; j++){
+        hit_counts[i][j] /=2;
+      }
+    }
+    return allocations;
 }

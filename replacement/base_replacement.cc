@@ -141,7 +141,7 @@ uint32_t CACHE::lru_cpu_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, co
         {
             if (block[set][way].cpu == cpu)
             {
-                if (lru_value < block[set][way].lru)
+                if (lru_value <= block[set][way].lru)
                 {
                     lru_value = block[set][way].lru;
                     to_be_evicted = way;

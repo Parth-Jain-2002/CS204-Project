@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
+#include "cache.h"
 extern vector<vector<uint32_t>> arr;
 
 // These values will come from the ATD structure
 // Assuming there will be ATD for this
 // For the UMON structure
-
+using namespace std;
 float get_mu_value(uint32_t core, uint32_t a, uint32_t b)
 {
     int U = arr[core][b - 1] - arr[core][a - 1];

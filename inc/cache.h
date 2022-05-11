@@ -284,6 +284,10 @@ public:
         llc_find_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type),
         lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type),
         lru_cpu_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type);
+    
+    vector<uint32_t> partition_algorithm();
+    pair<float, uint32_t> get_max_mu(uint32_t core, uint32_t alloc, uint32_t balance);
+    float get_mu_value(uint32_t core, uint32_t a, uint32_t b);
 };
 
 #endif
