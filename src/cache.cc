@@ -2115,11 +2115,19 @@ vector<uint32_t> CACHE:: partition_algorithm()
         }
         allocations[winner] += present_state[winner].second;
         balance -= present_state[winner].second;
+        if (present_state[winner].second==0) break;
+    }
+    uint32_t allocate = balance / NUM_CPUS;
+    uint32_t left = balance % NUM_CPUS;
+    for (uint32_t i=0; i<NUM_CPUS; i++) 
+    {
+      allocations[i] += allocate;
+      if (i==0) allocations[i] += left;
     }
     for (uint32_t i = 0; i<NUM_CPUS; i++){
       for (uint32_t j = 0; j<NUM_WAY; j++){
-        hit_counts[i][j] /=2;
-      }
+      hit_counts[i][j] /=2;
+    }
     }
     return allocations;
 }
