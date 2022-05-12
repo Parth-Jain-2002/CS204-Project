@@ -1,138 +1,134 @@
 <p align="center">
-  <h1 align="center"> ChampSim </h1>
+  <h1 align="center">Unified Cache Partitioning in ChampSim </h1>
   <p> ChampSim is a trace-based simulator for a microarchitecture study. You can sign up to the public mailing list by sending an empty mail to champsim+subscribe@googlegroups.com. Traces for the 3rd Data Prefetching Championship (DPC-3) can be found from here (https://dpc3.compas.cs.stonybrook.edu/?SW_IS). A set of traces used for the 2nd Cache Replacement Championship (CRC-2) can be found from this link. (http://bit.ly/2t2nkUj) <p>
 </p>
 
-# Clone ChampSim repository
-```
-git clone https://github.com/ChampSim/ChampSim.git
-```
-
-# Compile
-
-ChampSim takes five parameters: Branch predictor, L1D prefetcher, L2C prefetcher, LLC replacement policy, and the number of cores. 
-For example, `./build_champsim.sh bimodal no no lru 1` builds a single-core processor with bimodal branch predictor, no L1/L2 data prefetchers, and the baseline LRU replacement policy for the LLC.
-```
-$ ./build_champsim.sh bimodal no no no no lru 1
-
-$ ./build_champsim.sh ${BRANCH} ${L1I_PREFETCHER} ${L1D_PREFETCHER} ${L2C_PREFETCHER} ${LLC_PREFETCHER} ${LLC_REPLACEMENT} ${NUM_CORE}
-```
-
-# Download DPC-3 trace
-
-Professor Daniel Jimenez at Texas A&M University kindly provided traces for DPC-3. Use the following script to download these traces (~20GB size and max simpoint only).
-```
-$ cd scripts
-
-$ ./download_dpc3_traces.sh
-```
-
-# Run simulation
-
-Execute `run_champsim.sh` with proper input arguments. The default `TRACE_DIR` in `run_champsim.sh` is set to `$PWD/dpc3_traces`. <br>
-
-* Single-core simulation: Run simulation with `run_champsim.sh` script.
-
-```
-Usage: ./run_champsim.sh [BINARY] [N_WARM] [N_SIM] [TRACE] [OPTION]
-$ ./run_champsim.sh bimodal-no-no-no-no-lru-1core 1 10 400.perlbench-41B.champsimtrace.xz
-
-${BINARY}: ChampSim binary compiled by "build_champsim.sh" (bimodal-no-no-lru-1core)
-${N_WARM}: number of instructions for warmup (1 million)
-${N_SIM}:  number of instructinos for detailed simulation (10 million)
-${TRACE}: trace name (400.perlbench-41B.champsimtrace.xz)
-${OPTION}: extra option for "-low_bandwidth" (src/main.cc)
-```
-Simulation results will be stored under "results_${N_SIM}M" as a form of "${TRACE}-${BINARY}-${OPTION}.txt".<br> 
-
-* Multi-core simulation: Run simulation with `run_4core.sh` script. <br>
-```
-Usage: ./run_4core.sh [BINARY] [N_WARM] [N_SIM] [N_MIX] [TRACE0] [TRACE1] [TRACE2] [TRACE3] [OPTION]
-$ ./run_4core.sh bimodal-no-no-no-lru-4core 1 10 0 400.perlbench-41B.champsimtrace.xz \\
-  401.bzip2-38B.champsimtrace.xz 403.gcc-17B.champsimtrace.xz 410.bwaves-945B.champsimtrace.xz
-```
-Note that we need to specify multiple trace files for `run_4core.sh`. `N_MIX` is used to represent a unique ID for mixed multi-programmed workloads. 
+Changes have been made in the following files:
 
 
-# Add your own branch predictor, data prefetchers, and replacement policy
-**Copy an empty template**
-```
-$ cp branch/branch_predictor.cc branch/mybranch.bpred
-$ cp prefetcher/l1d_prefetcher.cc prefetcher/mypref.l1d_pref
-$ cp prefetcher/l2c_prefetcher.cc prefetcher/mypref.l2c_pref
-$ cp prefetcher/llc_prefetcher.cc prefetcher/mypref.llc_pref
-$ cp replacement/llc_replacement.cc replacement/myrepl.llc_repl
-```
 
-**Work on your algorithms with your favorite text editor**
-```
-$ vim branch/mybranch.bpred
-$ vim prefetcher/mypref.l1d_pref
-$ vim prefetcher/mypref.l2c_pref
-$ vim prefetcher/mypref.llc_pref
-$ vim replacement/myrepl.llc_repl
-```
+1. base_replacement.cc
+2. llc_replacement.cc
+3. cache.cc
+4. cache.h
 
-**Compile and test**
-```
-$ ./build_champsim.sh mybranch mypref mypref mypref myrepl 1
-$ ./run_champsim.sh mybranch-mypref-mypref-mypref-myrepl-1core 1 10 bzip2_183B
-```
+# ```base_replacement.cc```
 
-# How to create traces
+**Functions added:**
 
-We have included only 4 sample traces, taken from SPEC CPU 2006. These 
-traces are short (10 million instructions), and do not necessarily cover the range of behaviors your 
-replacement algorithm will likely see in the full competition trace list (not
-included).  We STRONGLY recommend creating your own traces, covering
-a wide variety of program types and behaviors.
 
-The included Pin Tool champsim_tracer.cpp can be used to generate new traces.
-We used Pin 3.2 (pin-3.2-81205-gcc-linux), and it may require 
-installing libdwarf.so, libelf.so, or other libraries, if you do not already 
-have them. Please refer to the Pin documentation (https://software.intel.com/sites/landingpage/pintool/docs/81205/Pin/html/)
-for working with Pin 3.2.
 
-Get this version of Pin:
-```
-wget http://software.intel.com/sites/landingpage/pintool/downloads/pin-3.2-81205-gcc-linux.tar.gz
-```
+1. **atd_lru_update()**
 
-**Note on compatibility**: If you are using newer linux kernels/Ubuntu versions (eg. 20.04LTS), you might run into issues (such as [[1](https://github.com/ChampSim/ChampSim/issues/102)],[[2](https://stackoverflow.com/questions/55698095/intel-pin-tools-32-bit-processsectionheaders-560-assertion-failed)],[[3](https://stackoverflow.com/questions/43589174/pin-tool-segmentation-fault-for-ubuntu-17-04)]) with the PIN3.2. ChampSim tracer works fine with newer PIN tool versions that can be downloaded from [here](https://software.intel.com/content/www/us/en/develop/articles/pin-a-binary-instrumentation-tool-downloads.html). PIN3.17 is [confirmed](https://github.com/ChampSim/ChampSim/issues/102) to work with Ubuntu 20.04.1 LTS.
+    Arguments passed: uint32_t set, uint32_t way, uint32_t cpu
 
-Once downloaded, open tracer/make_tracer.sh and change PIN_ROOT to Pin's location.
-Run ./make_tracer.sh to generate champsim_tracer.so.
 
-**Use the Pin tool like this**
-```
-pin -t obj-intel64/champsim_tracer.so -- <your program here>
-```
+    This function updates the LRU values of the blocks in the ATD.
 
-The tracer has three options you can set:
-```
--o
-Specify the output file for your trace.
-The default is default_trace.champsim
+2. **atd_lru_victim()**
 
--s <number>
-Specify the number of instructions to skip in the program before tracing begins.
-The default value is 0.
+    Arguments passed: uint32_t cpu, uint32_t set
 
--t <number>
-The number of instructions to trace, after -s instructions have been skipped.
-The default value is 1,000,000.
-```
-For example, you could trace 200,000 instructions of the program ls, after
-skipping the first 100,000 instructions, with this command:
-```
-pin -t obj/champsim_tracer.so -o traces/ls_trace.champsim -s 100000 -t 200000 -- ls
-```
-Traces created with the champsim_tracer.so are approximately 64 bytes per instruction,
-but they generally compress down to less than a byte per instruction using xz compression.
 
-# Evaluate Simulation
+    Returns: uint32_t way
 
-ChampSim measures the IPC (Instruction Per Cycle) value as a performance metric. <br>
-There are some other useful metrics printed out at the end of simulation. <br>
 
-Good luck and be a champion! <br>
+    This function finds the victim to be evicted from the ATD for a certain core and returns the way which contains the block to be evicted.
+
+3. **lru_cpu_victim()**
+
+    Arguments passed: uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type
+
+
+    Returns: uint32_t way
+
+
+    This function finds the victim in the partitioned LLC and returns the way which contains the block to be evicted.
+
+4. **lru_cpu_update()**
+
+    Arguments passed: uint32_t set, uint32_t way, uint32_t cpu
+
+
+    This function updates the LRU values of the blocks in the partition of a particular core in the LLC.
+
+
+# ```llc_replacement.cc```
+
+**Functions changed:**
+
+
+
+1. **llc_find_victim()**
+
+    lru_cpu_victim()  is called here instead of lru_victim() to find the victim block. The argument ‘cpu’ is passed to find the victim from that particular core’s partition.
+
+2. **llc_update_replacement_state()**
+
+    lru_cpu_update() is called here instead of lru_update() to update the LRU values of the blocks in a particular core’s partition.
+
+
+# ```cache.cc```
+
+**Functions changed:**
+
+
+
+1. **operate()**
+
+    This function was changed to call the partitioning algorithm every 5 million clock cycles. In this, we are receiving the new allocations from the partition algorithm. Based on the difference between new allocations and present allocations, ways are reallocated.
+
+2. **handle_writeback()**
+
+    We added functionality to check for hits in the ATD whenever hits are checked for in the LLC and update the LRU values and fill the ATD in case of misses.
+
+3. **handle_read()**
+
+    We added functionality to check for hits in the ATD whenever hits are checked for in the LLC and update the LRU values and fill the ATD in case of misses.
+
+
+**Functions added:**
+
+
+
+1. **fill_atd()**
+2. **check_hit_atd()**
+3. **get_mu_value()**
+
+    Arguments passed: uint32_t core, uint32_t a, uint32_t b
+
+
+    Returns:  mu_value
+
+
+    This function calculates and returns the marginal utility of a particular core if the partition increases from a to b ways.
+
+4. **get_max_mu()**
+
+    Arguments passed: uint32_t core, uint32_t alloc, uint32_t balance
+
+
+    Returns: pair&lt;float, uint32_t> {max_mu, min_way}
+
+
+    This function calculates and returns the maximum marginal utility along with the minimum number of ways to be added to achieve the same.
+
+5. **partition_algorithm()**
+
+    Arguments passed: None
+
+
+    Returns: vector&lt;uint32_t> allocations
+
+
+    This function uses the look-ahead algorithm mentioned in the UCP paper. It calls functions (3) and (4) to calculate the optimal number of ways to be allocated to each application (core).
+
+
+# ```cache.h```
+
+**	**The Constructor of the Cache is changed to accommodate the changes of UCP. 
+
+ATD is initialized for each core. Initially partition gives equal number of ways to each 
+
+
+    applications. Only 32 sets are sampled under Dynamic set sampling. Hit counters and LRU values are also initialized accordingly.

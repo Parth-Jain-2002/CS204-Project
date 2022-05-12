@@ -19,10 +19,13 @@ void CACHE::update_replacement_state(uint32_t cpu, uint32_t set, uint32_t way, u
 
 void CACHE::atd_lru_update(uint32_t set, uint32_t way, uint32_t cpu)
 {
-    // update lru replacement state
+    /*
+        Similar to lru_update
+        Updates lru replacement state in the ATD of the given cpu
+    */
     for (uint32_t i = 0; i < NUM_WAY; i++)
     {
-        if (atd[cpu][set][i].lru < atd[cpu][set][way].lru)
+        if (atd[cpu][set][i].lru < atd[cpu][set][way].lru) // Checking LRU state of ATD of given cpu
         {
             atd[cpu][set][i].lru++;
         }
@@ -110,14 +113,18 @@ uint32_t CACHE::lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const 
     return way;
 }
 
-uint32_t CACHE::lru_cpu_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type)
+uint32_t CACHE::llc_lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type)
 {
+    /*
+        Similar to lru_victim
+        Also checks the cpu attribute of the block
+    */
     uint32_t way = 0;
 
     // fill invalid line first
     for (way = 0; way < NUM_WAY; way++)
     {
-        if (block[set][way].cpu == cpu)
+        if (block[set][way].cpu == cpu) // Checking CPU before chcecking checking for vaildity
         {
             if (block[set][way].valid == false)
             {
@@ -139,12 +146,12 @@ uint32_t CACHE::lru_cpu_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, co
         uint32_t to_be_evicted = 0;
         for (way = 0; way < NUM_WAY; way++)
         {
-            if (block[set][way].cpu == cpu)
+            if (block[set][way].cpu == cpu) // Checking cpu before selecting max LRU value
             {
-                if (lru_value <= block[set][way].lru)
+                if (lru_value <= block[set][way].lru) // Selectign max LRU value
                 {
-                    lru_value = block[set][way].lru;
-                    to_be_evicted = way;
+                    lru_value = block[set][way].lru; // choosing max LRU value
+                    to_be_evicted = way;             // Selecting way to be evicted
 
                     DP(if (warmup_complete[cpu]) {
                     cout << "[" << NAME << "] " << _func_ << " instr_id: " << instr_id << " replace set: " << set << " way: " << way;
@@ -177,17 +184,20 @@ void CACHE::lru_update(uint32_t set, uint32_t way)
     block[set][way].lru = 0; // promote to the MRU position
 }
 
-void CACHE::lru_cpu_update(uint32_t set, uint32_t way, uint32_t cpu)
+void CACHE::llc_lru_update(uint32_t set, uint32_t way, uint32_t cpu)
 {
-    // update lru replacement state
+    /*
+        Similar to lru_update function
+        updates lru replacement state of the partitioned LLC based of the cpu attribute of the block
+    */
     for (uint32_t i = 0; i < NUM_WAY; i++)
     {
-        if ((block[set][i].cpu == cpu) && (block[set][i].lru < block[set][way].lru))
+        if ((block[set][i].cpu == cpu) && (block[set][i].lru < block[set][way].lru)) // Checking cpu values before increasing LRU
         {
             block[set][i].lru++;
         }
     }
-    block[set][way].lru = 0; // promote to the MRU position
+    block[set][way].lru = 0; // promote to the MRU position for the given cpu
 }
 
 void CACHE::replacement_final_stats()

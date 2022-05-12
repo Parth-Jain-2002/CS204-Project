@@ -135,8 +135,18 @@ public:
             }
         }
 
-        if (v1 == "LLC")
+        if (v1 == "LLC") // Checking if the cache is LLC, to create ATD for each core's LLC only.
         {
+            /*
+                We allocate CPU equally to the LLC, in this order 0,1,2---,NUM_CPUS-1
+                in each CPU, allocate the LRU value from MRU to LRU.
+                Example, let say ,we have 4 cores and 64 ways,
+
+                then core of blocks will be 0,0,---,0,1,1----1,2,2,-----2,3,3-----,3
+                each core number occurs 8 times
+
+                LRU Values are assigned : 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2---
+            */
             for (uint32_t i = 0; i < NUM_SET; i++)
             {
                 for (uint32_t j = 0; j < NUM_WAY; j++)
@@ -145,25 +155,35 @@ public:
                     block[i][j].cpu = j / (NUM_WAY / NUM_CPUS);
                 }
             }
+
+            /* Equal number of ways are being allocated to each core initially
+            then afterwards partitioning algo will decide the distribution*/
+
             for (uint32_t i = 0; i < NUM_CPUS; i++)
             {
                 partitions.push_back(NUM_WAY / NUM_CPUS);
             }
+
+            // Creating an array of ATD
             atd = new BLOCK **[NUM_CPUS];
-            // atd = (BLOCK ***)malloc(NUM_CPUS * sizeof(BLOCK **));
+
+            // for each CPU, create an ATD of 32 sets for Dynamic Set Sampling ( DSS )
             for (uint32_t i = 0; i < NUM_CPUS; i++)
             {
                 atd[i] = new BLOCK *[32];
                 for (uint32_t j = 0; j < 32; j++)
                 {
+                    // for each set in ATD , Blocks are being assigned in the set with LRU value starting from MRU ( 0 ) to LRU ( NUM_WAY-1 ).
                     atd[i][j] = new BLOCK[NUM_WAY];
                     for (uint32_t k = 0; k < NUM_WAY; k++)
                     {
+                        // Assiging LRU Value
                         atd[i][j][k].lru = k;
-                        // atd[i][j][k].valid = 0;
                     }
                 }
             }
+
+            // Hit counters is created for each way in an ATD, initalized with 0 hits
             hit_counts.resize(NUM_CPUS);
             for (uint32_t i = 0; i < NUM_CPUS; i++)
             {
@@ -171,14 +191,6 @@ public:
                 {
                     hit_counts[i].push_back(0);
                 }
-            }
-            for (uint32_t i = 0; i < NUM_CPUS; i++)
-            {
-                for (uint32_t j = 0; j < NUM_WAY; j++)
-                {
-                    cout<<hit_counts[i][j]<<' ';
-                }
-                cout<<endl;
             }
         }
 
@@ -251,7 +263,7 @@ public:
         update_replacement_state(uint32_t cpu, uint32_t set, uint32_t way, uint64_t full_addr, uint64_t ip, uint64_t victim_addr, uint32_t type, uint8_t hit),
         llc_update_replacement_state(uint32_t cpu, uint32_t set, uint32_t way, uint64_t full_addr, uint64_t ip, uint64_t victim_addr, uint32_t type, uint8_t hit),
         lru_update(uint32_t set, uint32_t way),
-        lru_cpu_update(uint32_t set, uint32_t way, uint32_t cpu),
+        llc_lru_update(uint32_t set, uint32_t way, uint32_t cpu),
         atd_lru_update(uint32_t set, uint32_t way, uint32_t cpu),
         fill_cache(uint32_t set, uint32_t way, PACKET *packet),
         fill_atd(uint32_t set, uint32_t way, PACKET *packet),
@@ -283,8 +295,8 @@ public:
         find_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type),
         llc_find_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type),
         lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type),
-        lru_cpu_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type);
-    
+        llc_lru_victim(uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type);
+
     vector<uint32_t> partition_algorithm();
     pair<float, uint32_t> get_max_mu(uint32_t core, uint32_t alloc, uint32_t balance);
     float get_mu_value(uint32_t core, uint32_t a, uint32_t b);

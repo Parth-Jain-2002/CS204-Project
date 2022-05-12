@@ -1,0 +1,779 @@
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+*** ChampSim Multicore Out-of-Order Simulator ***
+
+Warmup Instructions: 50000000
+Simulation Instructions: 100000000
+Number of CPUs: 2
+LLC sets: 4096
+LLC ways: 16
+Off-chip DRAM Size: 4096 MB Channels: 1 Width: 64-bit Data Rate: 3200 MT/s
+
+CPU 0 runs /home/prathamkundan/MAIN/ChampSim/dpc3_traces/bwaves_1861B.trace.xz
+CPU 1 runs /home/prathamkundan/MAIN/ChampSim/dpc3_traces/leslie3d_1186B.trace.xz
+CPU 0 Bimodal branch predictor
+CPU 1 Bimodal branch predictor
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 10000000 cycles: 5047864 heartbeat IPC: 1.98104 cumulative IPC: 1.98104 (Simulation time: 0 hr 0 min 59 sec) 
+Heartbeat CPU 0 instructions: 10000001 cycles: 5681687 heartbeat IPC: 1.76004 cumulative IPC: 1.76004 (Simulation time: 0 hr 1 min 6 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 20000003 cycles: 10095242 heartbeat IPC: 1.98123 cumulative IPC: 1.98113 (Simulation time: 0 hr 1 min 58 sec) 
+Heartbeat CPU 0 instructions: 20000001 cycles: 11363038 heartbeat IPC: 1.76014 cumulative IPC: 1.76009 (Simulation time: 0 hr 2 min 13 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 30000003 cycles: 15141874 heartbeat IPC: 1.98152 cumulative IPC: 1.98126 (Simulation time: 0 hr 2 min 56 sec) 
+Heartbeat CPU 0 instructions: 30000000 cycles: 17044607 heartbeat IPC: 1.76008 cumulative IPC: 1.76009 (Simulation time: 0 hr 3 min 20 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 40000002 cycles: 20188796 heartbeat IPC: 1.98141 cumulative IPC: 1.9813 (Simulation time: 0 hr 3 min 58 sec) 
+Heartbeat CPU 0 instructions: 40000000 cycles: 22726027 heartbeat IPC: 1.76012 cumulative IPC: 1.7601 (Simulation time: 0 hr 4 min 24 sec) 
+Heartbeat CPU 1 instructions: 50000002 cycles: 24711772 heartbeat IPC: 2.21093 cumulative IPC: 2.02333 (Simulation time: 0 hr 4 min 48 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 50000001 cycles: 28407553 heartbeat IPC: 1.76009 cumulative IPC: 1.7601 (Simulation time: 0 hr 5 min 32 sec) 
+
+Warmup complete CPU 0 instructions: 50000001 cycles: 28407553 (Simulation time: 0 hr 5 min 32 sec) 
+Warmup complete CPU 1 instructions: 59457139 cycles: 28407552 (Simulation time: 0 hr 5 min 32 sec) 
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 60000002 cycles: 31509736 heartbeat IPC: 1.47103 cumulative IPC: 0.174994 (Simulation time: 0 hr 5 min 41 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 60000000 cycles: 46794476 heartbeat IPC: 0.543865 cumulative IPC: 0.543865 (Simulation time: 0 hr 6 min 24 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 70000000 cycles: 58655981 heartbeat IPC: 0.368375 cumulative IPC: 0.348542 (Simulation time: 0 hr 7 min 14 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 70000000 cycles: 63654537 heartbeat IPC: 0.593118 cumulative IPC: 0.567424 (Simulation time: 0 hr 7 min 33 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 80000003 cycles: 75427151 heartbeat IPC: 0.596262 cumulative IPC: 0.4369 (Simulation time: 0 hr 8 min 22 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 80000003 cycles: 80458729 heartbeat IPC: 0.59509 cumulative IPC: 0.576356 (Simulation time: 0 hr 8 min 41 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 90000002 cycles: 92212256 heartbeat IPC: 0.595766 cumulative IPC: 0.478693 (Simulation time: 0 hr 9 min 26 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 90000002 cycles: 102028552 heartbeat IPC: 0.463611 cumulative IPC: 0.543323 (Simulation time: 0 hr 9 min 58 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 100000002 cycles: 108401696 heartbeat IPC: 0.617687 cumulative IPC: 0.506823 (Simulation time: 0 hr 10 min 18 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+0 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 110000000 cycles: 124699224 heartbeat IPC: 0.61359 cumulative IPC: 0.524893 (Simulation time: 0 hr 11 min 13 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 100000002 cycles: 134294457 heartbeat IPC: 0.309925 cumulative IPC: 0.472202 (Simulation time: 0 hr 11 min 39 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 120000001 cycles: 152970902 heartbeat IPC: 0.353711 cumulative IPC: 0.486041 (Simulation time: 0 hr 12 min 20 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 110000000 cycles: 165376625 heartbeat IPC: 0.321728 cumulative IPC: 0.438055 (Simulation time: 0 hr 12 min 47 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 0 1 1 0 1 1 1 1 1 1 0 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 
+1 1 0 1 1 1 1 1 1 1 0 1 1 1 1 0 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 0 0 
+1 1 1 1 1 1 1 1 0 0 0 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 0 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 0 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 
+1 1 1 1 1 1 1 1 0 1 0 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 0 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 0 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 
+1 1 1 1 1 1 1 1 0 1 0 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 130000001 cycles: 185145813 heartbeat IPC: 0.310801 cumulative IPC: 0.450068 (Simulation time: 0 hr 13 min 33 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1 
+1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 
+1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 0 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 
+1 0 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 120000002 cycles: 192763637 heartbeat IPC: 0.365137 cumulative IPC: 0.425905 (Simulation time: 0 hr 13 min 55 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 0 1 1 1 0 1 1 1 0 1 0 0 0 0 
+1 0 0 0 0 1 1 1 1 1 0 1 1 1 0 0 
+0 0 1 1 1 1 1 0 0 1 1 1 0 0 1 0 
+1 1 1 1 1 1 0 0 1 0 0 0 0 1 1 0 
+0 0 1 0 1 1 1 1 1 1 0 0 1 0 0 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 0 1 1 1 0 1 1 1 0 1 0 0 0 0 
+1 0 0 0 0 1 1 1 1 1 0 1 1 1 0 0 
+0 0 1 1 1 1 1 0 0 1 1 1 0 0 1 0 
+1 1 1 1 1 1 0 0 1 0 0 0 0 1 1 0 
+0 0 1 0 1 1 1 1 1 1 0 0 1 0 0 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 1 1 1 0 1 1 1 0 1 0 1 0 0 
+1 1 0 0 0 1 1 1 1 1 0 1 1 1 0 1 
+1 0 1 1 1 1 1 0 0 1 1 1 0 0 1 1 
+1 1 1 1 1 1 1 0 1 0 0 0 0 1 1 1 
+1 0 1 0 1 1 1 1 1 1 1 0 1 0 0 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 
+1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 
+1 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 0 1 1 1 1 1 1 
+1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 130000002 cycles: 213469023 heartbeat IPC: 0.482966 cumulative IPC: 0.432289 (Simulation time: 0 hr 15 min 8 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 140000001 cycles: 220248153 heartbeat IPC: 0.284881 cumulative IPC: 0.419843 (Simulation time: 0 hr 15 min 34 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1 
+1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 
+1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 0 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 
+1 0 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 
+1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 140000000 cycles: 232809711 heartbeat IPC: 0.517045 cumulative IPC: 0.440308 (Simulation time: 0 hr 16 min 18 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 1 1 1 1 1 1 1 0 1 0 1 1 1 
+1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 
+1 0 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 1 DEFICIENT: 1
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Heartbeat CPU 1 instructions: 150000001 cycles: 252487091 heartbeat IPC: 0.310184 cumulative IPC: 0.404066 (Simulation time: 0 hr 17 min 24 sec) 
+Heartbeat CPU 0 instructions: 150000003 cycles: 254299825 heartbeat IPC: 0.46533 cumulative IPC: 0.442689 (Simulation time: 0 hr 17 min 30 sec) 
+Finished CPU 0 instructions: 100000002 cycles: 225892272 cumulative IPC: 0.442689 (Simulation time: 0 hr 17 min 30 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Heartbeat CPU 0 instructions: 160000000 cycles: 273922830 heartbeat IPC: 0.509606 cumulative IPC: 0.448037 (Simulation time: 0 hr 18 min 35 sec) 
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Partitions changing!
+Partitions changed!
+EXTRA: 0 DEFICIENT: 0
+1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 
+1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 
+
+
+Finished CPU 1 instructions: 100000000 cycles: 262314012 cumulative IPC: 0.381222 (Simulation time: 0 hr 19 min 49 sec) 
+
+ChampSim completed all CPUs
+
+Total Simulation Statistics (not including warmup)
+
+CPU 0 cumulative IPC: 0.453845 instructions: 119049890 cycles: 262314011
+L1D TOTAL     ACCESS:   38175915  HIT:   35339477  MISS:    2836438
+L1D LOAD      ACCESS:   34875505  HIT:   32091695  MISS:    2783810
+L1D RFO       ACCESS:    3300410  HIT:    3247782  MISS:      52628
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I TOTAL     ACCESS:   18035349  HIT:   18035323  MISS:         26
+L1I LOAD      ACCESS:   18035349  HIT:   18035323  MISS:         26
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L2C TOTAL     ACCESS:    3059511  HIT:     331289  MISS:    2728222
+L2C LOAD      ACCESS:    2783836  HIT:     108250  MISS:    2675586
+L2C RFO       ACCESS:      52628  HIT:          0  MISS:      52628
+L2C PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L2C WRITEBACK ACCESS:     223047  HIT:     223039  MISS:          8
+LLC TOTAL     ACCESS:    2949836  HIT:      20867  MISS:    2928969
+LLC LOAD      ACCESS:    2675586  HIT:        210  MISS:    2675376
+LLC RFO       ACCESS:      52628  HIT:          0  MISS:      52628
+LLC PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+LLC WRITEBACK ACCESS:     221622  HIT:      20657  MISS:     200965
+
+CPU 1 cumulative IPC: 0.381222 instructions: 100000000 cycles: 262314012
+L1D TOTAL     ACCESS:   24532932  HIT:   20555307  MISS:    3977625
+L1D LOAD      ACCESS:   15756181  HIT:   12706836  MISS:    3049345
+L1D RFO       ACCESS:    8776751  HIT:    7848471  MISS:     928280
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I TOTAL     ACCESS:   18513116  HIT:   18511972  MISS:       1144
+L1I LOAD      ACCESS:   18513116  HIT:   18511972  MISS:       1144
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L2C TOTAL     ACCESS:    5251172  HIT:    2265865  MISS:    2985307
+L2C LOAD      ACCESS:    3050297  HIT:     736380  MISS:    2313917
+L2C RFO       ACCESS:     928066  HIT:     259355  MISS:     668711
+L2C PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L2C WRITEBACK ACCESS:    1272809  HIT:    1270130  MISS:       2679
+LLC TOTAL     ACCESS:    3956964  HIT:    1270301  MISS:    2686663
+LLC LOAD      ACCESS:    2313916  HIT:     258703  MISS:    2055213
+LLC RFO       ACCESS:     668709  HIT:      39461  MISS:     629248
+LLC PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+LLC WRITEBACK ACCESS:     974339  HIT:     972137  MISS:       2202
+
+Region of Interest Statistics
+
+CPU 0 cumulative IPC: 0.442689 instructions: 100000002 cycles: 225892272
+L1D TOTAL     ACCESS:   30587234  HIT:   28207312  MISS:    2379922
+L1D LOAD      ACCESS:   27811928  HIT:   25473513  MISS:    2338415
+L1D RFO       ACCESS:    2775306  HIT:    2733799  MISS:      41507
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1D PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1D AVERAGE MISS LATENCY: 446.796 cycles
+L1I TOTAL     ACCESS:   15257808  HIT:   15257782  MISS:         26
+L1I LOAD      ACCESS:   15257808  HIT:   15257782  MISS:         26
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1I AVERAGE MISS LATENCY: 296.692 cycles
+L2C TOTAL     ACCESS:    2591599  HIT:     297086  MISS:    2294513
+L2C LOAD      ACCESS:    2338441  HIT:      85443  MISS:    2252998
+L2C RFO       ACCESS:      41507  HIT:          0  MISS:      41507
+L2C PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L2C WRITEBACK ACCESS:     211651  HIT:     211643  MISS:          8
+L2C PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L2C AVERAGE MISS LATENCY: 443.56 cycles
+LLC TOTAL     ACCESS:    2504992  HIT:      20867  MISS:    2484125
+LLC LOAD      ACCESS:    2252999  HIT:        210  MISS:    2252789
+LLC RFO       ACCESS:      41507  HIT:          0  MISS:      41507
+LLC PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+LLC WRITEBACK ACCESS:     210486  HIT:      20657  MISS:     189829
+LLC PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+LLC AVERAGE MISS LATENCY: 720.453 cycles
+Major fault: 0 Minor fault: 54043
+
+CPU 1 cumulative IPC: 0.381222 instructions: 100000000 cycles: 262314012
+L1D TOTAL     ACCESS:   24532932  HIT:   20555307  MISS:    3977625
+L1D LOAD      ACCESS:   15756181  HIT:   12706836  MISS:    3049345
+L1D RFO       ACCESS:    8776751  HIT:    7848471  MISS:     928280
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1D PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1D AVERAGE MISS LATENCY: 255.241 cycles
+L1I TOTAL     ACCESS:   18513116  HIT:   18511972  MISS:       1144
+L1I LOAD      ACCESS:   18513116  HIT:   18511972  MISS:       1144
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1I AVERAGE MISS LATENCY: 263.304 cycles
+L2C TOTAL     ACCESS:    5251172  HIT:    2265865  MISS:    2985307
+L2C LOAD      ACCESS:    3050297  HIT:     736380  MISS:    2313917
+L2C RFO       ACCESS:     928066  HIT:     259355  MISS:     668711
+L2C PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L2C WRITEBACK ACCESS:    1272809  HIT:    1270130  MISS:       2679
+L2C PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L2C AVERAGE MISS LATENCY: 318.174 cycles
+LLC TOTAL     ACCESS:    3956964  HIT:    1270301  MISS:    2686663
+LLC LOAD      ACCESS:    2313916  HIT:     258703  MISS:    2055213
+LLC RFO       ACCESS:     668709  HIT:      39461  MISS:     629248
+LLC PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+LLC WRITEBACK ACCESS:     974339  HIT:     972137  MISS:       2202
+LLC PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+LLC AVERAGE MISS LATENCY: 666.14 cycles
+Major fault: 0 Minor fault: 19651
+
+DRAM Statistics
+ CHANNEL 0
+ RQ ROW_BUFFER_HIT:    2099365  ROW_BUFFER_MISS:    3313025
+ DBUS_CONGESTED:    1889840
+ WQ ROW_BUFFER_HIT:     275480  ROW_BUFFER_MISS:     865560  FULL:          0
+
+ AVG_CONGESTED_CYCLE: 6
+
+CPU 0 Branch Prediction Accuracy: 81.8597% MPKI: 11.1392 Average ROB Occupancy at Mispredict: 101.594
+
+Branch types
+NOT_BRANCH: 111739350 93.8593%
+BRANCH_DIRECT_JUMP: 270400 0.227132%
+BRANCH_INDIRECT: 0 0%
+BRANCH_CONDITIONAL: 7039981 5.91347%
+BRANCH_DIRECT_CALL: 1 8.39984e-07%
+BRANCH_INDIRECT_CALL: 0 0%
+BRANCH_RETURN: 1 8.39984e-07%
+BRANCH_OTHER: 0 0%
+
+
+CPU 1 Branch Prediction Accuracy: 98.4065% MPKI: 0.800542 Average ROB Occupancy at Mispredict: 260.866
+
+Branch types
+NOT_BRANCH: 94501063 94.5011%
+BRANCH_DIRECT_JUMP: 69887 0.069887%
+BRANCH_INDIRECT: 21 2.1e-05%
+BRANCH_CONDITIONAL: 5424545 5.42455%
+BRANCH_DIRECT_CALL: 2147 0.002147%
+BRANCH_INDIRECT_CALL: 5 5e-06%
+BRANCH_RETURN: 2153 0.002153%
+BRANCH_OTHER: 0 0%
+

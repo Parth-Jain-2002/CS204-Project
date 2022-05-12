@@ -260,26 +260,15 @@ void CACHE::handle_writeback()
     uint32_t set = get_set(WQ.entry[index].address);
     int way = check_hit(&WQ.entry[index]);
 
+    // Checking for hits in the ATD whenever we check for hit in the LLC
     if (cache_type == IS_LLC && set % (NUM_SET / 32) == 0)
     {
-      int atd_way = check_hit_atd(&WQ.entry[index]);
+      int atd_way = check_hit_atd(&WQ.entry[index]); // Checking for hit in the ATD
       if (atd_way == -1)
       {
-        int way_r = atd_lru_victim(WQ.entry[index].cpu, set / (NUM_SET / 32));
-        fill_atd(set / (NUM_SET / 32), way_r, &WQ.entry[index]);
-      }
-      else
-      {
-        // if (current_core_cycle[0] > 50000000)
-        // {
-        //   cerr << "CORE: " << WQ.entry[index].cpu << " HITS: ";
-        //   for (uint32_t i = 0; i < NUM_WAY; i++)
-        //   {
-        //     cerr << hit_counts[WQ.entry[index].cpu][i] << ' ';
-        //   }
-        //   cerr << endl;
-        // }
-        // atd_lru_update(set/(NUM_SET/32), atd_way, RQ.entry[index].cpu);
+        int way_r = atd_lru_victim(WQ.entry[index].cpu, set / (NUM_SET / 32)); // Finding way to be replaced in ATD
+        fill_atd(set / (NUM_SET / 32), way_r, &WQ.entry[index]);               // Placing the the requested packet in cpu
+        atd_lru_update(set / (NUM_SET / 32), way_r, WQ.entry[index].cpu);      // Updating the lru values in ATD
       }
     }
 
@@ -603,26 +592,20 @@ void CACHE::handle_read()
       // access cache
       uint32_t set = get_set(RQ.entry[index].address);
       int way = check_hit(&RQ.entry[index]);
+
+      // Checking for hits in the ATD whenever we check for hit in the LLC
       if (cache_type == IS_LLC && set % (NUM_SET / 32) == 0)
       {
         int atd_way = check_hit_atd(&RQ.entry[index]);
         if (atd_way == -1)
         {
-          int way_r = atd_lru_victim(RQ.entry[index].cpu, set / (NUM_SET / 32));
-          fill_atd(set / (NUM_SET / 32), way_r, &RQ.entry[index]);
+          int way_r = atd_lru_victim(RQ.entry[index].cpu, set / (NUM_SET / 32)); // Finding way to be replaced in ATD
+          fill_atd(set / (NUM_SET / 32), way_r, &RQ.entry[index]);               // Placing the the requested packet in cpu
+          atd_lru_update(set / (NUM_SET / 32), way_r, RQ.entry[index].cpu);      // Updating the lru values in ATD
         }
         else
         {
-          // if (current_core_cycle[0] > 50000000)
-          // {
-          //   cerr << "CORE: " << RQ.entry[index].cpu << " HITS: ";
-          //   for (uint32_t i = 0; i < NUM_WAY; i++)
-          //   {
-          //     cerr << hit_counts[RQ.entry[index].cpu][i] << ' ';
-          //   }
-          //   cerr << endl;
-          // }
-          atd_lru_update(set / (NUM_SET / 32), atd_way, RQ.entry[index].cpu);
+          atd_lru_update(set / (NUM_SET / 32), atd_way, RQ.entry[index].cpu); // Updating the lru values in ATD
         }
       }
 
@@ -1178,9 +1161,13 @@ void CACHE::operate()
   {
     if (current_core_cycle[0] / 5000000 != partition_count)
     {
-      cerr << "Partitions changing!" << endl;
       vector<uint32_t> new_allocations = partition_algorithm();
-      cerr << "Partitions changed!" << endl;
+      if (partition_count == 0)
+        cerr << "Partition Changes every 5000000 cycles:\n";
+      cerr<<(partition_count+1)*5000000<<' ';
+      for (auto i : new_allocations)
+        cerr << i << ' ';
+      cerr << endl;
       vector<uint32_t> extra;     // Contains apps with extra ways
       vector<uint32_t> deficient; // Contains apps with deficient ways
       for (uint32_t application = 0; application < NUM_CPUS; application++)
@@ -1188,11 +1175,11 @@ void CACHE::operate()
         // Partition array for cpus assumed
         if (partitions[application] > new_allocations[application])
         {
-          extra.push_back(application);
+          extra.push_back(application); // Counting the number of cores with extra ways
         }
         if (partitions[application] < new_allocations[application])
         {
-          deficient.push_back(application);
+          deficient.push_back(application); // Counting the number of cores which need more ways
         }
       }
       for (int set = 0; set < NUM_SET; set++)
@@ -1202,47 +1189,41 @@ void CACHE::operate()
         {
           if (block[set][way].lru >= new_allocations[block[set][way].cpu])
           {
-            to_allocate.push_back(way);
+            to_allocate.push_back(way); // We count the ways that currently have higher LRU values than allowed
           }
         }
         for (uint32_t i = 0; i < extra.size(); i++)
         {
+          // We reduce the number of ways to the number given by the partitioning algorithm
+          // (Only for the cores which have more ways than required)
           partitions[extra[i]] = new_allocations[extra[i]];
         }
         vector<int> copy_partitions;
         for (auto i : partitions)
         {
+          // Making a copy of the current partitions that we will modify for each set
           copy_partitions.push_back(i);
         }
         for (uint32_t i = 0; i < deficient.size(); i++)
         {
           while (copy_partitions[deficient[i]] < new_allocations[deficient[i]])
           {
+            // We allocate the ways that we have collected from the other cores to the cores that need more ways
             uint32_t req_way = to_allocate[to_allocate.size() - 1];
             block[set][req_way].cpu = deficient[i];
-            block[set][req_way].valid = 0;
+            // block[set][req_way].valid = 0;
             block[set][req_way].lru = copy_partitions[deficient[i]];
             copy_partitions[deficient[i]]++;
             to_allocate.pop_back();
           }
         }
       }
-      cerr<<"EXTRA: "<<extra.size()<<" DEFICIENT: "<<deficient.size()<<endl;
       for (int i = 0; i < partitions.size(); i++)
       {
+        // We set the partitions of each core to the value given by the partitioning algorithm
         partitions[i] = new_allocations[i];
       }
       partition_count++;
-      for (uint32_t i = 0; i < 5; i++)
-      {
-        for (uint32_t j = 0; j < NUM_WAY; j++)
-        {
-          cerr << block[i][j].cpu << " ";
-        }
-        cerr << endl;
-      }
-      cerr << endl
-           << endl;
     }
   }
   handle_fill();
@@ -1324,6 +1305,10 @@ void CACHE::fill_cache(uint32_t set, uint32_t way, PACKET *packet)
 
 void CACHE::fill_atd(uint32_t set, uint32_t way, PACKET *packet)
 {
+  /*
+    Similar to fill_cache function
+    Filling the ATD of the CPU of the requested packet
+  */
   uint64_t curr_cpu = packet->cpu;
 
   if (atd[curr_cpu][set][way].valid == 0)
@@ -1332,7 +1317,6 @@ void CACHE::fill_atd(uint32_t set, uint32_t way, PACKET *packet)
   }
 
   atd[curr_cpu][set][way].dirty = 0;
-  atd[curr_cpu][set][way].prefetch = (packet->type == PREFETCH) ? 1 : 0;
   atd[curr_cpu][set][way].used = 0;
   atd[curr_cpu][set][way].depth = packet->depth;
   atd[curr_cpu][set][way].signature = packet->signature;
@@ -1342,7 +1326,6 @@ void CACHE::fill_atd(uint32_t set, uint32_t way, PACKET *packet)
   atd[curr_cpu][set][way].tag = packet->address;
   atd[curr_cpu][set][way].address = packet->address;
   atd[curr_cpu][set][way].full_addr = packet->full_addr;
-  atd[curr_cpu][set][way].data = packet->data;
   atd[curr_cpu][set][way].ip = packet->ip;
   atd[curr_cpu][set][way].cpu = packet->cpu;
   atd[curr_cpu][set][way].instr_id = packet->instr_id;
@@ -1407,17 +1390,20 @@ int CACHE::check_hit(PACKET *packet)
 
 int CACHE::check_hit_atd(PACKET *packet)
 {
-  uint32_t set = get_set(packet->address) / (NUM_SET / 32);
+  /*
+    Checking for hit in the ATD
+  */
+  uint32_t set = get_set(packet->address) / (NUM_SET / 32); // Mapping requested in the ATD
   int match_way = -1;
-  int curr_cpu = packet->cpu;
+  int curr_cpu = packet->cpu; // Finding the CPU of the requested packet
 
   if (NAME == "LLC")
     for (uint32_t way = 0; way < NUM_WAY; way++)
     {
-      if (atd[curr_cpu][set][way].valid && (atd[curr_cpu][set][way].tag == packet->address))
+      if (atd[curr_cpu][set][way].valid && (atd[curr_cpu][set][way].tag == packet->address)) // Checking for hit in each of the ways in ATD of requested CPU
       {
         match_way = way;
-        hit_counts[curr_cpu][atd[curr_cpu][set][way].lru]++;
+        hit_counts[curr_cpu][atd[curr_cpu][set][way].lru]++; // Incrementing the hit counts of the LRU position of the ATD
         DP(if (warmup_complete[packet->cpu]) {
               cout << "[" << NAME << "] " << __func__ << " instr_id: " << packet->instr_id << " type: " << +packet->type << hex << " addr: " << packet->address;
               cout << " full_addr: " << packet->full_addr << " tag: " << block[set][way].tag << " data: " << block[set][way].data << dec;
@@ -1427,7 +1413,7 @@ int CACHE::check_hit_atd(PACKET *packet)
         break;
       }
     }
-  return match_way;
+  return match_way; // Returning the matched way (-1 in case of miss)
 }
 
 int CACHE::invalidate_entry(uint64_t inval_addr)
@@ -2064,70 +2050,89 @@ void CACHE::increment_WQ_FULL(uint64_t address)
 
 float CACHE::get_mu_value(uint32_t core, uint32_t a, uint32_t b)
 {
-    vector<vector<int>>arr(NUM_CPUS);
-    for(uint32_t i=0; i<NUM_CPUS; i++){
-      arr[i].push_back(hit_counts[i][0]);
-      for (uint32_t j = 1; j<NUM_WAY; j++){
-        arr[i].push_back(arr[i][j-1]+hit_counts[i][j]);
+  // Function calculate the marginal utility value for the core given as arguement
+  vector<vector<int>> arr(NUM_CPUS);
+  for (uint32_t i = 0; i < NUM_CPUS; i++)
+  {
+    // We create a prefix array that will be used to calculate the difference in misses between different allocations
+    arr[i].push_back(hit_counts[i][0]);
+    for (uint32_t j = 1; j < NUM_WAY; j++)
+    {
+      arr[i].push_back(arr[i][j - 1] + hit_counts[i][j]);
+    }
+  }
+  // U is the difference in misses when the core is allocated different number of ways
+  int U = arr[core][b - 1] - arr[core][a - 1];
+  // Marginal utility = (missa - missb) / (b-a)
+  return (float)U / (float)(b - a);
+}
+
+pair<float, uint32_t> CACHE::get_max_mu(uint32_t core, uint32_t alloc, uint32_t balance)
+{
+  float max_mu = 0;
+  uint32_t min_way = 0;
+  // We find the maximum utility by giving it one additional way at a time
+  // This also allows us to find the minimum number of ways it needs to achieve this utility value
+  for (uint32_t way = 1; way <= balance; way++)
+  {
+    float mu = get_mu_value(core, alloc, alloc + way);
+    if (mu > max_mu)
+    {
+      max_mu = mu;
+      min_way = way;
+    }
+  }
+  return {max_mu, min_way};
+}
+
+vector<uint32_t> CACHE::partition_algorithm()
+{
+  // We allocate atleast one way to each CPU
+  int balance = NUM_WAY - NUM_CPUS;
+  vector<uint32_t> allocations(NUM_CPUS, 1);
+  vector<pair<float, uint32_t>> present_state(NUM_CPUS, {0, 0});
+  while (balance != 0)
+  {
+    // We find the maximum marginal utility when we have 'balance' number of ways available for distribution
+    for (uint32_t application = 0; application < NUM_CPUS; application++)
+    {
+      uint32_t alloc = allocations[application];
+      present_state[application] = get_max_mu(application, alloc, balance);
+    }
+    uint32_t winner = 0;
+    float max_mu = 0;
+    // We check which core has the highest marginal utility value
+    // We also find the number of ways it requires to achieve this marginal utility
+    for (uint32_t application = 0; application < NUM_CPUS; application++)
+    {
+      if (present_state[application].first > max_mu)
+      {
+        winner = application;
+        max_mu = present_state[application].first;
       }
     }
-    int U = arr[core][b - 1] - arr[core][a - 1];
-    return (float)U / (float)(b - a);
-}
-
-pair<float, uint32_t> CACHE:: get_max_mu(uint32_t core, uint32_t alloc, uint32_t balance)
-{
-    float max_mu = 0;
-    uint32_t min_way = 0;
-    for (uint32_t way = 1; way <= balance; way++)
+    allocations[winner] += present_state[winner].second;
+    balance -= present_state[winner].second;
+    // If no core requires additional ways to improve its performance, we break
+    if (present_state[winner].second == 0)
+      break;
+  }
+  uint32_t allocate = balance / NUM_CPUS;
+  uint32_t left = balance % NUM_CPUS;
+  // If we have ways left for distribution, we allocate them equally to all the cores
+  for (uint32_t i = 0; i < NUM_CPUS; i++)
+  {
+    allocations[i] += allocate;
+    if (i == 0)
+      allocations[i] += left;
+  }
+  // If the partitioning algorithm is called, we divide the number of counters by 2
+  for (uint32_t i = 0; i < NUM_CPUS; i++)
+  {
+    for (uint32_t j = 0; j < NUM_WAY; j++)
     {
-        float mu = get_mu_value(core, alloc, alloc + way);
-        if (mu > max_mu)
-        {
-            max_mu = mu;
-            min_way = way;
-        }
+      hit_counts[i][j] /= 2;
     }
-    return {max_mu, min_way};
-}
-
-vector<uint32_t> CACHE:: partition_algorithm()
-{
-    int balance = NUM_WAY - NUM_CPUS;
-    vector<uint32_t> allocations(NUM_CPUS, 1);
-    vector<pair<float, uint32_t>> present_state(NUM_CPUS, {0,0});
-    while (balance != 0)
-    {
-        for (uint32_t application = 0; application < NUM_CPUS; application++)
-        {
-            uint32_t alloc = allocations[application];
-            present_state[application] = get_max_mu(application, alloc, balance);
-        }
-        uint32_t winner = 0;
-        float max_mu = 0;
-        for (uint32_t application = 0; application < NUM_CPUS; application++)
-        {
-            if (present_state[application].first > max_mu)
-            {
-                winner = application;
-                max_mu = present_state[application].first;
-            }
-        }
-        allocations[winner] += present_state[winner].second;
-        balance -= present_state[winner].second;
-        if (present_state[winner].second==0) break;
-    }
-    uint32_t allocate = balance / NUM_CPUS;
-    uint32_t left = balance % NUM_CPUS;
-    for (uint32_t i=0; i<NUM_CPUS; i++) 
-    {
-      allocations[i] += allocate;
-      if (i==0) allocations[i] += left;
-    }
-    for (uint32_t i = 0; i<NUM_CPUS; i++){
-      for (uint32_t j = 0; j<NUM_WAY; j++){
-      hit_counts[i][j] /=2;
-    }
-    }
-    return allocations;
+  }
+  return allocations;
 }
