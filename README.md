@@ -129,3 +129,17 @@ Changes have been made in the following files:
   The Constructor of the Cache is changed to accommodate the changes of UCP. 
   ATD is initialized for each core. Initially partition gives equal number of ways to each 
   applications. Only 32 sets are sampled under Dynamic set sampling. Hit counters and LRU values are also initialized accordingly.
+
+# ```Results```
+  
+   **Core-1 :** bzip2_281B.trace.xz  
+   **Core-2 :** lbm_1004B.trace.xz  
+   
+   ![Figure](https://user-images.githubusercontent.com/75127394/168048759-27ebf95a-ed31-4c08-8568-57408048e6ce.png)  
+   **Core 1:**
+   * **Cumulative IPC:** 1.00332 instructions: 192667751 cycles: 192029585
+   * LLC TOTAL     ACCESS:    5866175  HIT:    2494774  MISS:    3371401
+ 
+   **Core 2:**
+   * **Cumulative IPC:** 0.520753 instructions: 100000002 cycles: 192029586  
+   * LLC TOTAL     ACCESS:    1085561  HIT:     837840  MISS:     247721
