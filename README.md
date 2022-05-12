@@ -126,9 +126,6 @@ Changes have been made in the following files:
 
 # ```cache.h```
 
-**	**The Constructor of the Cache is changed to accommodate the changes of UCP. 
-
-ATD is initialized for each core. Initially partition gives equal number of ways to each 
-
-
-    applications. Only 32 sets are sampled under Dynamic set sampling. Hit counters and LRU values are also initialized accordingly.
+  The Constructor of the Cache is changed to accommodate the changes of UCP. 
+  ATD is initialized for each core. Initially partition gives equal number of ways to each 
+  applications. Only 32 sets are sampled under Dynamic set sampling. Hit counters and LRU values are also initialized accordingly.
