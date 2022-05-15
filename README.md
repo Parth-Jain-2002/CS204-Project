@@ -35,7 +35,7 @@ Changes have been made in the following files:
 
     This function finds the victim to be evicted from the ATD for a certain core and returns the way which contains the block to be evicted.
 
-3. **lru_cpu_victim()**
+3. **llc_lru_victim()**
 
     Arguments passed: uint32_t cpu, uint64_t instr_id, uint32_t set, const BLOCK *current_set, uint64_t ip, uint64_t full_addr, uint32_t type
 
@@ -45,7 +45,7 @@ Changes have been made in the following files:
 
     This function finds the victim in the partitioned LLC and returns the way which contains the block to be evicted.
 
-4. **lru_cpu_update()**
+4. **llc_lru_update()**
 
     Arguments passed: uint32_t set, uint32_t way, uint32_t cpu
 
@@ -61,11 +61,11 @@ Changes have been made in the following files:
 
 1. **llc_find_victim()**
 
-    lru_cpu_victim()  is called here instead of lru_victim() to find the victim block. The argument ‘cpu’ is passed to find the victim from that particular core’s partition.
+    llc_lru_victim()  is called here instead of lru_victim() to find the victim block. The argument ‘cpu’ is passed to find the victim from that particular core’s partition.
 
 2. **llc_update_replacement_state()**
 
-    lru_cpu_update() is called here instead of lru_update() to update the LRU values of the blocks in a particular core’s partition.
+    llc_lru_update() is called here instead of lru_update() to update the LRU values of the blocks in a particular core’s partition.
 
 
 # ```cache.cc```
